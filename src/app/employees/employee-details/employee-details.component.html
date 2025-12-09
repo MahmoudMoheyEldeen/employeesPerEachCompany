@@ -1,1 +1,188 @@
-<p>employee-details works!</p>
+<div class="w-full min-h-screen py-8">
+    <!-- Back Button - Full Width at Left -->
+    <div class="mb-6 px-4 sm:px-6 lg:px-8">
+        <p-button icon="pi pi-arrow-left" label="Back to Employees" [text]="true"
+            styleClass="text-white hover:text-indigo-400" (onClick)="goBack()">
+        </p-button>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Employee Not Found -->
+        <div *ngIf="!employee" class="text-center py-12">
+            <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 p-12">
+                <i class="pi pi-user-minus text-6xl text-gray-400 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-white mb-2">Employee Not Found</h3>
+                <p class="text-gray-400 mb-6">The employee you're looking for doesn't exist.</p>
+                <p-button label="Go Back" icon="pi pi-arrow-left" (onClick)="goBack()"></p-button>
+            </div>
+        </div>
+
+        <!-- Employee Details -->
+        <div *ngIf="employee" class="space-y-6">
+
+            <!-- Header Card with Profile -->
+            <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 overflow-hidden">
+                <!-- Cover Background -->
+                <div class="relative h-32 bg-gradient-to-br from-indigo-500/30 to-purple-500/30">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-purple-600/20"></div>
+                </div>
+
+                <!-- Profile Section -->
+                <div class="relative px-6 pb-6">
+                    <div class="flex flex-col sm:flex-row sm:items-end sm:space-x-6">
+                        <!-- Avatar -->
+                        <div class="relative -mt-16 mb-4 sm:mb-0">
+                            <div class="w-32 h-32 rounded-full bg-white/10 ring-4 ring-gray-900 overflow-hidden">
+                                <img *ngIf="employee.imageUrl" [src]="employee.imageUrl" [alt]="employee.fullName"
+                                    class="w-full h-full object-cover">
+                                <div *ngIf="!employee.imageUrl"
+                                    class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600">
+                                    <svg class="w-20 h-20 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Name and Status -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div>
+                                    <h1 class="text-3xl font-bold text-white mb-2">{{ employee.fullName }}</h1>
+                                    <div class="flex flex-wrap items-center gap-3 text-gray-400">
+                                        <span class="flex items-center gap-1.5">
+                                            <i class="pi pi-briefcase text-indigo-400"></i>
+                                            <span class="text-indigo-400 font-medium">{{ employee.position || 'N/A'
+                                                }}</span>
+                                        </span>
+                                        <span class="text-gray-500">•</span>
+                                        <span class="flex items-center gap-1.5">
+                                            <i class="pi pi-building text-sm"></i>
+                                            {{ employee.department }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Status Badge -->
+                                <div
+                                    [class]="'px-4 py-2 rounded-full text-sm font-semibold ring-2 ring-gray-900 ' + getStatusClass()">
+                                    {{ employee.status }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-white/10">
+                        <app-edit-button></app-edit-button>
+                        <app-delete-button></app-delete-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Contact Information -->
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 p-6">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <i class="pi pi-phone text-indigo-400"></i>
+                        Contact Information
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-envelope text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Email</p>
+                                <p class="text-white font-medium">{{ employee.email || 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10"></div>
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-phone text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Phone</p>
+                                <p class="text-white font-medium">{{ employee.phone || 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10"></div>
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-map-marker text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Address</p>
+                                <p class="text-white font-medium">{{ employee.address || 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment Details -->
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 p-6">
+                    <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                        <i class="pi pi-briefcase text-indigo-400"></i>
+                        Employment Details
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-calendar text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Hire Date</p>
+                                <p class="text-white font-medium">{{ employee.hireDate }}</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10"></div>
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-user text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Manager</p>
+                                <p class="text-white font-medium">{{ employee.manager || 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10"></div>
+                        <div class="flex items-start gap-3">
+                            <i class="pi pi-dollar text-gray-400 mt-1"></i>
+                            <div>
+                                <p class="text-sm text-gray-400">Salary</p>
+                                <p class="text-white font-medium">{{ employee.salary || 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Additional Information -->
+            <div class="bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 p-6">
+                <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                    <i class="pi pi-info-circle text-indigo-400"></i>
+                    Additional Information
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-4 bg-white/5 rounded-xl">
+                        <i class="pi pi-id-card text-3xl text-indigo-400 mb-2"></i>
+                        <p class="text-sm text-gray-400">Employee ID</p>
+                        <p class="text-lg font-semibold text-white">#{{ employee.id }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-xl">
+                        <i class="pi pi-building text-3xl text-purple-400 mb-2"></i>
+                        <p class="text-sm text-gray-400">Department</p>
+                        <p class="text-lg font-semibold text-white">{{ employee.department }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-xl">
+                        <i class="pi pi-briefcase text-3xl text-pink-400 mb-2"></i>
+                        <p class="text-sm text-gray-400">Position</p>
+                        <p class="text-lg font-semibold text-white">{{ employee.position || 'N/A' }}</p>
+                    </div>
+                    <div class="text-center p-4 bg-white/5 rounded-xl">
+                        <i class="pi pi-check-circle text-3xl text-green-400 mb-2"></i>
+                        <p class="text-sm text-gray-400">Status</p>
+                        <p class="text-lg font-semibold text-white">{{ employee.status }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
