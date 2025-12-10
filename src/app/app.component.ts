@@ -63,6 +63,9 @@ export class AppComponent {
   navigateToHome() {
     this.router.navigate(['/WelcomePage']);
   }
+  navigateToAllEmployees() {
+    this.router.navigate(['/allEmployees']);
+  }
 
   logout() {
     this.sessionService.clearSession();

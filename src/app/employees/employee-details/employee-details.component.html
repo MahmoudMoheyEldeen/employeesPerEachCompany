@@ -54,7 +54,7 @@
                                     <div class="flex flex-wrap items-center gap-3 text-gray-400">
                                         <span class="flex items-center gap-1.5">
                                             <i class="pi pi-briefcase text-indigo-400"></i>
-                                            <span class="text-indigo-400 font-medium">{{ employee.position || 'N/A'
+                                            <span class="text-indigo-400 font-medium">{{ employee.job || 'N/A'
                                                 }}</span>
                                         </span>
                                         <span class="text-gray-500">•</span>
@@ -76,8 +76,8 @@
 
                     <!-- Action Buttons -->
                     <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-white/10">
-                        <app-edit-button></app-edit-button>
-                        <app-delete-button></app-delete-button>
+                        <app-edit-button (onClick)="editEmployee($event)"></app-edit-button>
+                        <app-delete-button (onClick)="deleteEmployee($event)"></app-delete-button>
                     </div>
                 </div>
             </div>
@@ -142,10 +142,10 @@
                         </div>
                         <div class="border-t border-white/10"></div>
                         <div class="flex items-start gap-3">
-                            <i class="pi pi-dollar text-gray-400 mt-1"></i>
+                            <i class="pi pi-id-card text-gray-400 mt-1"></i>
                             <div>
-                                <p class="text-sm text-gray-400">Salary</p>
-                                <p class="text-white font-medium">{{ employee.salary || 'N/A' }}</p>
+                                <p class="text-sm text-gray-400">Role</p>
+                                <p class="text-white font-medium">{{ employee.role || 'N/A' }}</p>
                             </div>
                         </div>
                     </div>
@@ -172,8 +172,8 @@
                     </div>
                     <div class="text-center p-4 bg-white/5 rounded-xl">
                         <i class="pi pi-briefcase text-3xl text-pink-400 mb-2"></i>
-                        <p class="text-sm text-gray-400">Position</p>
-                        <p class="text-lg font-semibold text-white">{{ employee.position || 'N/A' }}</p>
+                        <p class="text-sm text-gray-400">Job</p>
+                        <p class="text-lg font-semibold text-white">{{ employee.job || 'N/A' }}</p>
                     </div>
                     <div class="text-center p-4 bg-white/5 rounded-xl">
                         <i class="pi pi-check-circle text-3xl text-green-400 mb-2"></i>

@@ -46,11 +46,13 @@ export class EmployeeCardComponent {
     return 'bg-red-500/10 text-red-400 ring-red-500/20';
   }
 
-  editEmployee(): void {
+  editEmployee(event: Event): void {
+    event.stopPropagation();
     this.onEdit.emit(this.employee);
   }
 
-  deleteEmployee(): void {
+  deleteEmployee(event: Event): void {
+    event.stopPropagation();
     this.onDelete.emit(this.employee);
   }
   navigateToEmployeeDetails() {

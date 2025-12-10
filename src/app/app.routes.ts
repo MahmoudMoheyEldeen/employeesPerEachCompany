@@ -3,6 +3,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { AllEmployeesComponent } from './employees/all-employees/all-employees.component';
 import { EmployeeDetailsComponent } from './employees/employee-details/employee-details.component';
+import { AddEditEmplyeeComponent } from './employees/add-edit-emplyee/add-edit-emplyee.component';
 
 export const routes: Routes = [
   {
@@ -29,5 +30,13 @@ export const routes: Routes = [
   {
     path: 'employee-Details',
     component: EmployeeDetailsComponent,
+  },
+  {
+    path: 'add-edit-employee',
+    component: AddEditEmplyeeComponent,
+  },
+  {
+    path: 'add-edit-employee/:id',
+    component: AddEditEmplyeeComponent,
   },
 ];

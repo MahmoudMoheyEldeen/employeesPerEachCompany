@@ -12,14 +12,23 @@
                     </p>
                 </div>
                 <div class="mt-10">
-                    <app-add-button labelValue="Add New Employee"></app-add-button>
+                    <app-add-button labelValue="Add New Employee" (onClick)="navigateToAddEmployee()">
+                    </app-add-button>
 
                 </div>
 
             </div>
 
-            <div class="mt-6 ">
-                <app-search (searchChange)="onSearchChange($event)"></app-search>
+            <div class="mt-6 flex flex-col sm:flex-row">
+                <div class="w-[30rem]">
+                    <app-search (searchChange)="onSearchChange($event)"></app-search>
+                </div>
+                <div class="w-full sm:w-64">
+                    <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus" (onChange)="onStatusChange()"
+                        optionLabel="label" optionValue="value" placeholder="Filter by Status" [showClear]="true"
+                        styleClass="custom-dropdown z-50" panelStyleClass="custom-dropdown-panel" class="w-full">
+                    </p-dropdown>
+                </div>
             </div>
 
         </div>

@@ -4,20 +4,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { EditButtonComponent } from '../../shared/components/edit-button/edit-button.component';
 import { DeleteButtonComponent } from '../../shared/components/delete-button/delete-button.component';
+import { HttpGeneralService } from '../../core/services/httpGeneralService.service';
+import { SessionService } from '../../core/services/session.service';
+import Swal from 'sweetalert2';
 
 interface Employee {
   id: number;
+  employeeId: number;
   fullName: string;
   department: string;
   hireDate: string;
-  status: 'Active' | 'Suspended';
+  status: string;
   imageUrl?: string;
   email?: string;
   phone?: string;
-  position?: string;
-  salary?: string;
+  job?: string;
   address?: string;
   manager?: string;
+  nationality?: string;
+  nationalId?: string;
+  birthdate?: string;
+  gender?: string;
+  maritalStatus?: string;
+  role?: string;
 }
 
 @Component({
@@ -35,91 +44,14 @@ interface Employee {
 export class EmployeeDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private httpService = inject(HttpGeneralService);
+  private sessionService = inject(SessionService);
 
   employeeId: number = 0;
   employee: Employee | null = null;
-
-  // Mock data - replace with actual service call
-  mockEmployees: Employee[] = [
-    {
-      id: 1,
-      fullName: 'Ahmed Mohamed',
-      department: 'Engineering',
-      hireDate: '2023-01-15',
-      status: 'Active',
-      email: 'ahmed.mohamed@company.com',
-      phone: '+20 123 456 7890',
-      position: 'Senior Software Engineer',
-      salary: '$85,000',
-      address: 'Cairo, Egypt',
-      manager: 'John Smith',
-    },
-    {
-      id: 2,
-      fullName: 'Sara Ali',
-      department: 'Marketing',
-      hireDate: '2022-06-20',
-      status: 'Active',
-      email: 'sara.ali@company.com',
-      phone: '+20 123 456 7891',
-      position: 'Marketing Manager',
-      salary: '$75,000',
-      address: 'Alexandria, Egypt',
-      manager: 'Jane Doe',
-    },
-    {
-      id: 3,
-      fullName: 'Omar Hassan',
-      department: 'Sales',
-      hireDate: '2023-03-10',
-      status: 'Suspended',
-      email: 'omar.hassan@company.com',
-      phone: '+20 123 456 7892',
-      position: 'Sales Representative',
-      salary: '$60,000',
-      address: 'Giza, Egypt',
-      manager: 'Mike Johnson',
-    },
-    {
-      id: 4,
-      fullName: 'Fatima Ibrahim',
-      department: 'HR',
-      hireDate: '2021-11-05',
-      status: 'Active',
-      email: 'fatima.ibrahim@company.com',
-      phone: '+20 123 456 7893',
-      position: 'HR Specialist',
-      salary: '$70,000',
-      address: 'Cairo, Egypt',
-      manager: 'Sarah Williams',
-    },
-    {
-      id: 5,
-      fullName: 'Khaled Mahmoud',
-      department: 'Engineering',
-      hireDate: '2023-07-22',
-      status: 'Active',
-      email: 'khaled.mahmoud@company.com',
-      phone: '+20 123 456 7894',
-      position: 'Frontend Developer',
-      salary: '$65,000',
-      address: 'Mansoura, Egypt',
-      manager: 'John Smith',
-    },
-    {
-      id: 6,
-      fullName: 'Nour Youssef',
-      department: 'Design',
-      hireDate: '2022-09-18',
-      status: 'Active',
-      email: 'nour.youssef@company.com',
-      phone: '+20 123 456 7895',
-      position: 'UI/UX Designer',
-      salary: '$72,000',
-      address: 'Cairo, Egypt',
-      manager: 'Emily Davis',
-    },
-  ];
+  rawEmployeeData: any = null; // Store raw API data for edit
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -129,28 +61,139 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   loadEmployeeDetails() {
-    // Mock data - replace with actual API call
-    this.employee =
-      this.mockEmployees.find((emp) => emp.id === this.employeeId) || null;
+    const companyId = this.sessionService.getCompanyId();
+
+    if (!companyId) {
+      this.errorMessage = 'Please login first';
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    const apiUrl = `https://erpapi.nc.sa/erp/Mangement/get_all_erp_employees_by_company_id?company_id=${companyId}`;
+
+    this.httpService.get<any>(apiUrl).subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response)) {
+          const employeeData = response.find(
+            (emp: any) => emp.id === this.employeeId
+          );
+
+          if (employeeData) {
+            // Store raw data for edit functionality
+            this.rawEmployeeData = employeeData;
+
+            this.employee = {
+              id: employeeData.id,
+              employeeId: employeeData.employeeId,
+              fullName: employeeData.nameEn || employeeData.nameAr || 'N/A',
+              department:
+                employeeData.department_name_en ||
+                employeeData.department_name_ar ||
+                'N/A',
+              hireDate: this.formatDate(employeeData.joining_date),
+              status:
+                employeeData.employment_status_name_en ||
+                employeeData.employment_status_name_ar ||
+                'N/A',
+              imageUrl: employeeData.emp_image,
+              email: employeeData.email || 'N/A',
+              phone: employeeData.phone_no || 'N/A',
+              job: employeeData.job || 'N/A',
+              address: employeeData.address || 'N/A',
+              manager:
+                employeeData.direct_manager_name_en ||
+                employeeData.direct_manager_name_ar ||
+                'N/A',
+              nationality: employeeData.nationality || 'N/A',
+              nationalId: employeeData.national_id || 'N/A',
+              birthdate: this.formatDate(employeeData.birthdate),
+              gender:
+                employeeData.gender_name_en ||
+                employeeData.gender_name_ar ||
+                'N/A',
+              maritalStatus:
+                employeeData.marital_status_name_en ||
+                employeeData.marital_status_name_ar ||
+                'N/A',
+              role: employeeData.roleNameEn || employeeData.roleNameAr || 'N/A',
+            };
+          } else {
+            this.employee = null;
+            this.errorMessage = 'Employee not found';
+          }
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load employee details:', error);
+        this.errorMessage = 'Failed to load employee details';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'N/A';
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
   getStatusClass(): string {
-    return this.employee?.status === 'Active'
-      ? 'bg-green-500/10 text-green-400 ring-green-500/20'
-      : 'bg-red-500/10 text-red-400 ring-red-500/20';
+    const status = this.employee?.status?.toLowerCase() || '';
+    if (status.includes('active') || status.includes('نشط')) {
+      return 'bg-green-500/10 text-green-400 ring-green-500/20';
+    }
+    return 'bg-red-500/10 text-red-400 ring-red-500/20';
   }
 
   goBack() {
     this.router.navigate(['/allEmployees']);
   }
 
-  editEmployee() {
-    console.log('Edit employee:', this.employee);
-    // Add edit logic here
+  editEmployee(event: Event) {
+    event.stopPropagation();
+
+    if (!this.employee) return;
+
+    // Navigate to edit form with raw employee data
+    this.router.navigate(['/add-edit-employee', this.employee.id], {
+      state: { employee: this.rawEmployeeData },
+    });
   }
 
-  deleteEmployee() {
-    console.log('Delete employee:', this.employee);
-    // Add delete logic here
+  deleteEmployee(event: Event) {
+    event.stopPropagation();
+
+    if (!this.employee) return;
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete ${this.employee.fullName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // TODO: Add API call to delete employee
+        console.log('Deleting employee:', this.employee);
+
+        // Show success message and navigate back
+        Swal.fire('Deleted!', 'Employee has been deleted.', 'success').then(
+          () => {
+            this.router.navigate(['/allEmployees']);
+          }
+        );
+      }
+    });
   }
 }

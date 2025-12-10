@@ -5,9 +5,14 @@
       <p-button label="Home" icon="pi pi-home" [link]="true" styleClass="text-white"
         (onClick)="navigateToHome()"></p-button>
     </div>
+    <div *ngIf="router.url.toLowerCase().includes('welcomepage') && isLoggedIn">
+      <p-button label="All Employees" icon="pi pi-home" [link]="true" styleClass="text-white"
+        (onClick)="navigateToAllEmployees()"></p-button>
+    </div>
     <div class="flex items-center gap-3 sm:gap-4" [class.ml-auto]="router.url.toLowerCase().includes('welcomepage')">
       <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="label"
-        [style]="{'min-width': '120px'}" styleClass="text-sm">
+        [style]="{'min-width': '120px'}" styleClass="text-sm" styleClass="custom-dropdown z-50"
+        panelStyleClass="custom-dropdown-panel" class="w-full">
       </p-dropdown>
       <p-button [label]="isLoggedIn ? 'Logout' : 'Login'" [icon]="isLoggedIn ? 'pi pi-sign-out' : 'pi pi-sign-in'"
         [link]="true" styleClass="text-white" (onClick)="handleAuthButtonClick()">

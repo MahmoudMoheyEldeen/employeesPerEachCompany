@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Button } from 'primeng/button';
 
 @Component({
@@ -8,4 +8,10 @@ import { Button } from 'primeng/button';
   templateUrl: './edit-button.component.html',
   styleUrl: './edit-button.component.scss',
 })
-export class EditButtonComponent {}
+export class EditButtonComponent {
+  @Output() onClick = new EventEmitter<Event>();
+
+  handleClick(event: Event): void {
+    this.onClick.emit(event);
+  }
+}

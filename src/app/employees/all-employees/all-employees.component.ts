@@ -10,7 +10,9 @@ import { SearchComponent } from '../../shared/components/search/search.component
 import { HttpGeneralService } from '../../core/services/httpGeneralService.service';
 import { SessionService } from '../../core/services/session.service';
 import { Router } from '@angular/router';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import Swal from 'sweetalert2';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-all-employees',
@@ -21,6 +23,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     AddButtonComponent,
     ReadMoreButtonComponent,
     SearchComponent,
+    DropdownModule,
+    FormsModule,
   ],
   templateUrl: './all-employees.component.html',
   styleUrl: './all-employees.component.scss',
@@ -29,12 +33,22 @@ export class AllEmployeesComponent implements OnInit {
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   displayedEmployees: Employee[] = [];
+  rawEmployeesData: any[] = []; // Store raw API data
   isLoading: boolean = false;
   errorMessage: string = '';
   pageSize: number = 8;
   currentPage: number = 0;
   hasMore: boolean = false;
   searchTerm: string = '';
+  selectedStatus: string | null = null;
+
+  statusOptions = [
+    { label: 'All Status', value: null },
+    { label: 'Active Employee', value: 'Active Employee' },
+    { label: 'Probation Period', value: 'Probation Period' },
+    { label: 'Terminated Employee', value: 'Terminated Employee' },
+    { label: 'Deceased Employee', value: 'Deceased Employee' },
+  ];
 
   private httpService = inject(HttpGeneralService);
   private sessionService = inject(SessionService);
@@ -66,6 +80,9 @@ export class AllEmployeesComponent implements OnInit {
 
         // Map API response to Employee interface
         if (response && Array.isArray(response)) {
+          // Store raw API data
+          this.rawEmployeesData = response;
+
           this.employees = response.map((emp: any) => ({
             id: emp.id,
             employeeId: emp.employeeId,
@@ -122,13 +139,19 @@ export class AllEmployeesComponent implements OnInit {
 
   onSearchChange(searchTerm: string): void {
     this.searchTerm = searchTerm.toLowerCase().trim();
+    this.applyFilters();
+  }
 
-    if (!this.searchTerm) {
-      // No search term - show all employees
-      this.filteredEmployees = [...this.employees];
-    } else {
-      // Filter employees by all fields
-      this.filteredEmployees = this.employees.filter((employee) => {
+  onStatusChange(): void {
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let filtered = [...this.employees];
+
+    // Apply search filter
+    if (this.searchTerm) {
+      filtered = filtered.filter((employee) => {
         const fullName = employee.fullName?.toLowerCase() || '';
         const department = employee.department?.toLowerCase() || '';
         const hireDate = employee.hireDate?.toLowerCase() || '';
@@ -142,6 +165,15 @@ export class AllEmployeesComponent implements OnInit {
         );
       });
     }
+
+    // Apply status filter
+    if (this.selectedStatus) {
+      filtered = filtered.filter((employee) => 
+        employee.status === this.selectedStatus
+      );
+    }
+
+    this.filteredEmployees = filtered;
 
     // Reset pagination and load first page of filtered results
     this.resetPagination();
@@ -159,12 +191,52 @@ export class AllEmployeesComponent implements OnInit {
   }
 
   onEditEmployee(employee: Employee): void {
-    console.log('Edit employee:', employee);
-    // Add your edit logic here
+    // Find the raw employee data by ID
+    const rawEmployee = this.rawEmployeesData.find(
+      (emp) => emp.id === employee.id
+    );
+
+    // Navigate to edit form with raw employee data as state
+    this.router.navigate(['/add-edit-employee', employee.id], {
+      state: { employee: rawEmployee || employee },
+    });
   }
 
   onDeleteEmployee(employee: Employee): void {
-    console.log('Delete employee:', employee);
-    // Add your delete logic here
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete ${employee.fullName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // TODO: Add API call to delete employee
+        console.log('Deleting employee:', employee);
+
+        // Remove from local arrays
+        this.employees = this.employees.filter((emp) => emp.id !== employee.id);
+        this.filteredEmployees = this.filteredEmployees.filter(
+          (emp) => emp.id !== employee.id
+        );
+        this.displayedEmployees = this.displayedEmployees.filter(
+          (emp) => emp.id !== employee.id
+        );
+
+        // Update hasMore flag
+        this.hasMore =
+          this.currentPage * this.pageSize < this.filteredEmployees.length;
+
+        // Show success message
+        Swal.fire('Deleted!', 'Employee has been deleted.', 'success');
+      }
+    });
+  }
+
+  navigateToAddEmployee(): void {
+    this.router.navigate(['/add-edit-employee']);
   }
 }

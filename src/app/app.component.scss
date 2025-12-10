@@ -1,0 +1,91 @@
+// Custom dropdown styling to match app theme
+:host ::ng-deep .custom-dropdown .p-dropdown,
+:host ::ng-deep .custom-dropdown.p-dropdown,
+:host ::ng-deep p-dropdown.custom-dropdown .p-dropdown {
+    background: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.75rem !important;
+    color: white !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-inputtext,
+:host ::ng-deep .custom-dropdown input {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: white !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled):hover {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled).p-focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+    border-color: rgba(99, 102, 241, 0.5) !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-label {
+    color: white !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-label.p-placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-trigger {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-clear-icon {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-clear-icon:hover {
+    color: white !important;
+}
+
+// Dropdown panel styling
+:host ::ng-deep .custom-dropdown-panel {
+    background: rgba(30, 30, 30, 0.95) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    z-index: 9999 !important;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-items {
+    padding: 0.5rem;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-item {
+    color: white !important;
+    border-radius: 0.5rem;
+    margin: 0.125rem 0;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: white !important;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-item.p-highlight {
+    background: rgba(99, 102, 241, 0.3) !important;
+    color: white !important;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-item:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .custom-dropdown-panel .p-dropdown-empty-message {
+    color: rgba(255, 255, 255, 0.6) !important;
+}

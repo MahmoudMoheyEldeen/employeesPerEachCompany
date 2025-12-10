@@ -36,9 +36,9 @@
 
 
         <div class="flex gap-2 justify-center">
-            <app-edit-button></app-edit-button>
+            <app-edit-button (onClick)="editEmployee($event)"></app-edit-button>
 
-            <app-delete-button></app-delete-button>
+            <app-delete-button (onClick)="deleteEmployee($event)"></app-delete-button>
         </div>
     </div>
 </div>
