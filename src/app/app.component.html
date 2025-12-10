@@ -9,8 +9,9 @@
       <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="label"
         [style]="{'min-width': '120px'}" styleClass="text-sm">
       </p-dropdown>
-      <p-button label="Login" icon="pi pi-sign-in" [link]="true" styleClass="text-white"
-        (onClick)="navigateToLogin()"></p-button>
+      <p-button [label]="isLoggedIn ? 'Logout' : 'Login'" [icon]="isLoggedIn ? 'pi pi-sign-out' : 'pi pi-sign-in'"
+        [link]="true" styleClass="text-white" (onClick)="handleAuthButtonClick()">
+      </p-button>
     </div>
   </div>
 </header>

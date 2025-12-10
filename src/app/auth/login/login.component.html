@@ -12,31 +12,35 @@
 
 
         <div class="mt-8 bg-white/5 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-white/10 p-6 sm:p-8">
-            <form class="space-y-6" (ngSubmit)="onLogin()">
+            <form [formGroup]="loginForm" class="space-y-6" (ngSubmit)="onLogin()">
 
-                <div class="mb-2">
-                    <app-input-form label="Username" type="text" placeholder="Enter your username" id="username"
-                        [(ngModel)]="username" name="username" [required]="true" icon="pi pi-user">
-                    </app-input-form>
+                <!-- Error Message -->
+                <div *ngIf="errorMessage" class="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                    <p class="text-red-400 text-sm flex items-center gap-2">
+                        <i class="pi pi-exclamation-circle"></i>
+                        {{ errorMessage }}
+                    </p>
                 </div>
 
+                <div class="mb-2">
+                    <app-input-form label="Email" type="email" placeholder="Enter your email" id="email"
+                        formControlName="email" [required]="true" icon="pi pi-user">
+                    </app-input-form>
+                </div>
 
                 <div>
                     <app-input-form label="Password" type="password" placeholder="Enter your password" id="password"
-                        [(ngModel)]="password" name="password" [required]="true" icon="pi pi-lock">
+                        formControlName="password" [required]="true" icon="pi pi-lock">
                     </app-input-form>
                 </div>
 
-
-
-
-
                 <div>
-                    <p-button type="submit" label="Sign In" icon="pi pi-sign-in" styleClass="w-full justify-center"
+                    <p-button type="submit" [label]="isLoading ? 'Signing In...' : 'Sign In'"
+                        [icon]="isLoading ? 'pi pi-spinner pi-spin' : 'pi pi-sign-in'"
+                        styleClass="w-full justify-center" [disabled]="isLoading || loginForm.invalid"
                         [style]="{'width': '100%'}">
                     </p-button>
                 </div>
-
 
             </form>
 

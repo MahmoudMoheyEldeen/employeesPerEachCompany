@@ -8,11 +8,15 @@ import { Router } from '@angular/router';
 
 export interface Employee {
   id: number;
+  employeeId: number;
   fullName: string;
   department: string;
   hireDate: string;
-  status: 'Active' | 'Suspended';
+  status: string;
   imageUrl?: string;
+  email?: string;
+  job?: string;
+  phone?: string;
 }
 
 @Component({
@@ -35,9 +39,11 @@ export class EmployeeCardComponent {
   private router = inject(Router);
 
   getStatusClass(): string {
-    return this.employee.status === 'Active'
-      ? 'bg-green-500/10 text-green-400 ring-green-500/20'
-      : 'bg-red-500/10 text-red-400 ring-red-500/20';
+    const status = this.employee.status.toLowerCase();
+    if (status.includes('active') || status.includes('نشط')) {
+      return 'bg-green-500/10 text-green-400 ring-green-500/20';
+    }
+    return 'bg-red-500/10 text-red-400 ring-red-500/20';
   }
 
   editEmployee(): void {
@@ -48,6 +54,7 @@ export class EmployeeCardComponent {
     this.onDelete.emit(this.employee);
   }
   navigateToEmployeeDetails() {
-    this.router.navigate(['/employee-Details', this.employee.id]);
+    const url = `/employee-Details/${this.employee.id}`;
+    window.open(url, '_blank');
   }
 }
