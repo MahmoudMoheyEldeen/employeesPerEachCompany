@@ -3,10 +3,10 @@
 
         <div class="text-center">
             <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                Welcome Back
+                {{ 'login.title' | transloco }}
             </h2>
             <p class="mt-2 text-sm sm:text-base text-gray-400">
-                Sign in to your account to continue
+                {{ 'login.subtitle' | transloco }}
             </p>
         </div>
 
@@ -23,19 +23,22 @@
                 </div>
 
                 <div class="mb-2">
-                    <app-input-form label="Email" type="email" placeholder="Enter your email" id="email"
-                        formControlName="email" [required]="true" icon="pi pi-user">
+                    <app-input-form [label]="'login.companyId' | transloco" type="email"
+                        [placeholder]="'login.companyIdPlaceholder' | transloco" id="email" formControlName="email"
+                        [required]="true" icon="pi pi-user">
                     </app-input-form>
                 </div>
 
                 <div>
-                    <app-input-form label="Password" type="password" placeholder="Enter your password" id="password"
-                        formControlName="password" [required]="true" icon="pi pi-lock">
+                    <app-input-form [label]="'login.password' | transloco" type="password"
+                        [placeholder]="'login.passwordPlaceholder' | transloco" id="password" formControlName="password"
+                        [required]="true" icon="pi pi-lock">
                     </app-input-form>
                 </div>
 
                 <div>
-                    <p-button type="submit" [label]="isLoading ? 'Signing In...' : 'Sign In'"
+                    <p-button type="submit"
+                        [label]="isLoading ? ('login.signingIn' | transloco) : ('login.signIn' | transloco)"
                         [icon]="isLoading ? 'pi pi-spinner pi-spin' : 'pi pi-sign-in'"
                         styleClass="w-full justify-center" [disabled]="isLoading || loginForm.invalid"
                         [style]="{'width': '100%'}">

@@ -2,20 +2,21 @@
   <div class="flex justify-between items-center p-4 sm:p-6 lg:px-8 lg:py-4">
 
     <div *ngIf="!router.url.toLowerCase().includes('welcomepage')">
-      <p-button label="Home" icon="pi pi-home" [link]="true" styleClass="text-white"
+      <p-button [label]="'header.home' | transloco" icon="pi pi-home" [link]="true" styleClass="text-white"
         (onClick)="navigateToHome()"></p-button>
     </div>
     <div *ngIf="router.url.toLowerCase().includes('welcomepage') && isLoggedIn">
-      <p-button label="All Employees" icon="pi pi-home" [link]="true" styleClass="text-white"
+      <p-button [label]="'header.allEmployees' | transloco" icon="pi pi-users" [link]="true" styleClass="text-white"
         (onClick)="navigateToAllEmployees()"></p-button>
     </div>
     <div class="flex items-center gap-3 sm:gap-4" [class.ml-auto]="router.url.toLowerCase().includes('welcomepage')">
-      <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="label"
-        [style]="{'min-width': '120px'}" styleClass="text-sm" styleClass="custom-dropdown z-50"
+      <p-dropdown [options]="languages" [(ngModel)]="selectedLanguage" (onChange)="onLanguageChange()"
+        optionLabel="label" [style]="{'min-width': '120px'}" styleClass="custom-dropdown z-50"
         panelStyleClass="custom-dropdown-panel" class="w-full">
       </p-dropdown>
-      <p-button [label]="isLoggedIn ? 'Logout' : 'Login'" [icon]="isLoggedIn ? 'pi pi-sign-out' : 'pi pi-sign-in'"
-        [link]="true" styleClass="text-white" (onClick)="handleAuthButtonClick()">
+      <p-button [label]="(isLoggedIn ? 'header.logout' : 'header.login') | transloco"
+        [icon]="isLoggedIn ? 'pi pi-sign-out' : 'pi pi-sign-in'" [link]="true" styleClass="text-white"
+        (onClick)="handleAuthButtonClick()">
       </p-button>
     </div>
   </div>

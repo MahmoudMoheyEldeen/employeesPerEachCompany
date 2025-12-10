@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslocoModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
 })

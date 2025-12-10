@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { HttpGeneralService } from '../../core/services/httpGeneralService.service';
 import { CommonModule } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ import { CommonModule } from '@angular/common';
     ButtonModule,
     InputFormComponent,
     ReactiveFormsModule,
+    TranslocoModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './login.component.html',

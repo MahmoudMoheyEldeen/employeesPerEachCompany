@@ -7,6 +7,7 @@ import { DeleteButtonComponent } from '../../shared/components/delete-button/del
 import { HttpGeneralService } from '../../core/services/httpGeneralService.service';
 import { SessionService } from '../../core/services/session.service';
 import Swal from 'sweetalert2';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 interface Employee {
   id: number;
@@ -37,6 +38,7 @@ interface Employee {
     ButtonModule,
     EditButtonComponent,
     DeleteButtonComponent,
+    TranslocoModule,
   ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
@@ -46,6 +48,7 @@ export class EmployeeDetailsComponent implements OnInit {
   private router = inject(Router);
   private httpService = inject(HttpGeneralService);
   private sessionService = inject(SessionService);
+  private translocoService = inject(TranslocoService);
 
   employeeId: number = 0;
   employee: Employee | null = null;
@@ -57,6 +60,13 @@ export class EmployeeDetailsComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.employeeId = +params['id'];
       this.loadEmployeeDetails();
+    });
+
+    // Re-map employee data when language changes
+    this.translocoService.langChanges$.subscribe(() => {
+      if (this.rawEmployeeData) {
+        this.employee = this.mapEmployeeData(this.rawEmployeeData);
+      }
     });
   }
 
@@ -84,42 +94,7 @@ export class EmployeeDetailsComponent implements OnInit {
           if (employeeData) {
             // Store raw data for edit functionality
             this.rawEmployeeData = employeeData;
-
-            this.employee = {
-              id: employeeData.id,
-              employeeId: employeeData.employeeId,
-              fullName: employeeData.nameEn || employeeData.nameAr || 'N/A',
-              department:
-                employeeData.department_name_en ||
-                employeeData.department_name_ar ||
-                'N/A',
-              hireDate: this.formatDate(employeeData.joining_date),
-              status:
-                employeeData.employment_status_name_en ||
-                employeeData.employment_status_name_ar ||
-                'N/A',
-              imageUrl: employeeData.emp_image,
-              email: employeeData.email || 'N/A',
-              phone: employeeData.phone_no || 'N/A',
-              job: employeeData.job || 'N/A',
-              address: employeeData.address || 'N/A',
-              manager:
-                employeeData.direct_manager_name_en ||
-                employeeData.direct_manager_name_ar ||
-                'N/A',
-              nationality: employeeData.nationality || 'N/A',
-              nationalId: employeeData.national_id || 'N/A',
-              birthdate: this.formatDate(employeeData.birthdate),
-              gender:
-                employeeData.gender_name_en ||
-                employeeData.gender_name_ar ||
-                'N/A',
-              maritalStatus:
-                employeeData.marital_status_name_en ||
-                employeeData.marital_status_name_ar ||
-                'N/A',
-              role: employeeData.roleNameEn || employeeData.roleNameAr || 'N/A',
-            };
+            this.employee = this.mapEmployeeData(employeeData);
           } else {
             this.employee = null;
             this.errorMessage = 'Employee not found';
@@ -133,6 +108,62 @@ export class EmployeeDetailsComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  mapEmployeeData(employeeData: any): Employee {
+    const currentLang = this.translocoService.getActiveLang();
+    const isArabic = currentLang === 'ar';
+
+    return {
+      id: employeeData.id,
+      employeeId: employeeData.employeeId,
+      fullName: isArabic
+        ? employeeData.nameAr || employeeData.nameEn || 'N/A'
+        : employeeData.nameEn || employeeData.nameAr || 'N/A',
+      department: isArabic
+        ? employeeData.department_name_ar ||
+          employeeData.department_name_en ||
+          'N/A'
+        : employeeData.department_name_en ||
+          employeeData.department_name_ar ||
+          'N/A',
+      hireDate: this.formatDate(employeeData.joining_date),
+      status: isArabic
+        ? employeeData.employment_status_name_ar ||
+          employeeData.employment_status_name_en ||
+          'N/A'
+        : employeeData.employment_status_name_en ||
+          employeeData.employment_status_name_ar ||
+          'N/A',
+      imageUrl: employeeData.emp_image,
+      email: employeeData.email || 'N/A',
+      phone: employeeData.phone_no || 'N/A',
+      job: employeeData.job || 'N/A',
+      address: employeeData.address || 'N/A',
+      manager: isArabic
+        ? employeeData.direct_manager_name_ar ||
+          employeeData.direct_manager_name_en ||
+          'N/A'
+        : employeeData.direct_manager_name_en ||
+          employeeData.direct_manager_name_ar ||
+          'N/A',
+      nationality: employeeData.nationality || 'N/A',
+      nationalId: employeeData.national_id || 'N/A',
+      birthdate: this.formatDate(employeeData.birthdate),
+      gender: isArabic
+        ? employeeData.gender_name_ar || employeeData.gender_name_en || 'N/A'
+        : employeeData.gender_name_en || employeeData.gender_name_ar || 'N/A',
+      maritalStatus: isArabic
+        ? employeeData.marital_status_name_ar ||
+          employeeData.marital_status_name_en ||
+          'N/A'
+        : employeeData.marital_status_name_en ||
+          employeeData.marital_status_name_ar ||
+          'N/A',
+      role: isArabic
+        ? employeeData.roleNameAr || employeeData.roleNameEn || 'N/A'
+        : employeeData.roleNameEn || employeeData.roleNameAr || 'N/A',
+    };
   }
 
   formatDate(dateString: string): string {

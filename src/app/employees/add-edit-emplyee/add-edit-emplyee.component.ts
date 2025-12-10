@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-add-edit-emplyee',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, TranslocoModule],
   templateUrl: './add-edit-emplyee.component.html',
   styleUrl: './add-edit-emplyee.component.scss',
 })

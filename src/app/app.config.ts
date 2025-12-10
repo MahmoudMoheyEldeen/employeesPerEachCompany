@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { translocoConfig } from './transloco.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideHttpClient(),
+    translocoConfig,
   ],
 };

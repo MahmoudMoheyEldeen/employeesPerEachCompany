@@ -1,0 +1,100 @@
+{
+  "header": {
+    "home": "Home",
+    "allEmployees": "All Employees",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "welcome": {
+    "title": "Work with us",
+    "subtitle": "At our company, we believe in teamwork and creating a comfortable work environment that helps everyone give their best. If you are looking for a place to grow, learn, and share your ideas, our team is ready to welcome you.",
+    "portalDesc": "In this portal, every company can view detailed statistics for each employee and for all employees in the company.",
+    "stat1Title": "Live statistics",
+    "stat1Desc": "Employees per company",
+    "stat2Title": "Full name & department",
+    "stat2Desc": "Employee details",
+    "stat3Title": "Hire date & status",
+    "stat3Desc": "Work information",
+    "stat4Title": "Add, Edit or Delete Employees",
+    "stat4Desc": "Manage employees"
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "subtitle": "Sign in to your account to continue",
+    "companyId": "Company ID",
+    "companyIdPlaceholder": "Enter your company ID",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "errors": {
+      "companyIdRequired": "Company ID is required",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Invalid credentials. Please try again."
+    }
+  },
+  "employees": {
+    "title": "All Employees",
+    "subtitle": "Manage your team members and their information",
+    "addNew": "Add New Employee",
+    "search": "Search employees by name, department, date, or status...",
+    "filterStatus": "Filter by Status",
+    "loadMore": "Load More",
+    "noResults": "No results found",
+    "noResultsDesc": "Try adjusting your search terms",
+    "empty": "No employees found",
+    "emptyDesc": "Start by adding your first employee",
+    "loading": "Loading employees..."
+  },
+  "employeeDetails": {
+    "backToEmployees": "Back to Employees",
+    "notFound": "Employee Not Found",
+    "notFoundDesc": "The employee you're looking for doesn't exist.",
+    "goBack": "Go Back",
+    "contactInfo": "Contact Information",
+    "employmentDetails": "Employment Details",
+    "additionalInfo": "Additional Information",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "hireDate": "Hire Date",
+    "manager": "Manager",
+    "role": "Role",
+    "employeeId": "Employee ID",
+    "department": "Department",
+    "job": "Job",
+    "status": "Status"
+  },
+  "addEditEmployee": {
+    "addTitle": "Add New Employee",
+    "editTitle": "Edit Employee",
+    "addDesc": "Fill in the employee information below",
+    "editDesc": "Update the employee information below",
+    "personalInfo": "Personal Information",
+    "employmentInfo": "Employment Information",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter full name",
+    "department": "Department",
+    "departmentPlaceholder": "Enter department",
+    "hireDate": "Hire Date",
+    "status": "Status",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "cancel": "Cancel"
+  },
+  "status": {
+    "all": "All Status",
+    "active": "Active Employee",
+    "probation": "Probation Period",
+    "terminated": "Terminated Employee",
+    "deceased": "Deceased Employee"
+  },
+  "common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "na": "N/A"
+  }
+}

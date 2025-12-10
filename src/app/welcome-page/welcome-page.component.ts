@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-welcome-page',
   standalone: true,
-  imports: [],
+  imports: [TranslocoModule],
   templateUrl: './welcome-page.component.html',
-  styleUrl: './welcome-page.component.scss'
+  styleUrl: './welcome-page.component.scss',
 })
-export class WelcomePageComponent {
-
-}
+export class WelcomePageComponent {}

@@ -7,7 +7,7 @@
 
         <!-- Search Input -->
         <input type="text" [(ngModel)]="searchTerm" (input)="onSearchInput($event)"
-            placeholder="Search employees by name, department, date, or status..." class="w-full pl-11 pr-10 py-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl
+            [placeholder]="'employees.search' | transloco" class="w-full pl-11 pr-10 py-3 bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl
                    text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                    focus:border-transparent transition-all duration-300" />
 

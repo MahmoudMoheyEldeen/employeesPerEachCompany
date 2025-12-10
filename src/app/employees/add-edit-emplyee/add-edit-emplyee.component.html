@@ -6,14 +6,14 @@
                 <button (click)="backToEmployees()"
                     class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                     <i class="pi pi-arrow-left"></i>
-                    <span>Back to Employees</span>
+                    <span>{{ 'employeeDetails.backToEmployees' | transloco }}</span>
                 </button>
             </div>
             <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}
+                {{ (isEditMode ? 'addEditEmployee.editTitle' : 'addEditEmployee.addTitle') | transloco }}
             </h1>
             <p class="text-gray-400">
-                {{ isEditMode ? 'Update the employee information below' : 'Fill in the employee information below' }}
+                {{ (isEditMode ? 'addEditEmployee.editDesc' : 'addEditEmployee.addDesc') | transloco }}
             </p>
         </div>
 
@@ -24,9 +24,10 @@
                 <!-- Name Field -->
                 <div class="mb-6">
                     <label for="name" class="block text-sm font-medium text-white mb-2">
-                        Full Name <span class="text-red-400">*</span>
+                        {{ 'addEditEmployee.fullName' | transloco }} <span class="text-red-400">*</span>
                     </label>
-                    <input id="name" type="text" formControlName="name" placeholder="Enter employee name" class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
+                    <input id="name" type="text" formControlName="name"
+                        [placeholder]="'addEditEmployee.fullNamePlaceholder' | transloco" class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
                                placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                                focus:border-transparent transition-all duration-300"
                         [class.border-red-500]="isFieldInvalid('name')" />
@@ -38,10 +39,10 @@
                 <!-- Department Field -->
                 <div class="mb-6">
                     <label for="department" class="block text-sm font-medium text-white mb-2">
-                        Department <span class="text-red-400">*</span>
+                        {{ 'addEditEmployee.department' | transloco }} <span class="text-red-400">*</span>
                     </label>
-                    <input id="department" type="text" formControlName="department" placeholder="Enter department"
-                        class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
+                    <input id="department" type="text" formControlName="department"
+                        [placeholder]="'addEditEmployee.departmentPlaceholder' | transloco" class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
                                placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 
                                focus:border-transparent transition-all duration-300"
                         [class.border-red-500]="isFieldInvalid('department')" />
@@ -53,7 +54,7 @@
                 <!-- Hire Date Field -->
                 <div class="mb-6">
                     <label for="hireDate" class="block text-sm font-medium text-white mb-2">
-                        Hire Date <span class="text-red-400">*</span>
+                        {{ 'addEditEmployee.hireDate' | transloco }} <span class="text-red-400">*</span>
                     </label>
                     <input id="hireDate" type="date" formControlName="hireDate" class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
                                focus:outline-none focus:ring-2 focus:ring-indigo-500 
@@ -67,16 +68,16 @@
                 <!-- Status Field -->
                 <div class="mb-8">
                     <label for="status" class="block text-sm font-medium text-white mb-2">
-                        Status <span class="text-red-400">*</span>
+                        {{ 'addEditEmployee.status' | transloco }} <span class="text-red-400">*</span>
                     </label>
                     <select id="status" formControlName="status" class="w-full px-4 py-3 bg-white/5 backdrop-blur-lg border rounded-xl text-white 
                                focus:outline-none focus:ring-2 focus:ring-indigo-500 
                                focus:border-transparent transition-all duration-300"
                         [class.border-red-500]="isFieldInvalid('status')">
-                        <option value="Active Employee">Active Employee</option>
-                        <option value="Probation Period">Probation Period</option>
-                        <option value="Terminated Employee">Terminated Employee</option>
-                        <option value="Deceased Employee">Deceased Employee</option>
+                        <option value="Active Employee">{{ 'status.active' | transloco }}</option>
+                        <option value="Probation Period">{{ 'status.probation' | transloco }}</option>
+                        <option value="Terminated Employee">{{ 'status.terminated' | transloco }}</option>
+                        <option value="Deceased Employee">{{ 'status.deceased' | transloco }}</option>
                     </select>
                     <p *ngIf="isFieldInvalid('status')" class="mt-2 text-sm text-red-400">
                         {{ getErrorMessage('status') }}
@@ -89,17 +90,17 @@
                         class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold 
                                rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
                                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900">
-                        <span *ngIf="!isSubmitting">Save Employee</span>
+                        <span *ngIf="!isSubmitting">{{ 'addEditEmployee.submit' | transloco }}</span>
                         <span *ngIf="isSubmitting" class="flex items-center justify-center gap-2">
                             <i class="pi pi-spinner pi-spin"></i>
-                            Saving...
+                            {{ 'addEditEmployee.submitting' | transloco }}
                         </span>
                     </button>
                     <button type="button" (click)="backToEmployees()" [disabled]="isSubmitting" class="flex-1 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-semibold 
                                rounded-xl border border-white/10 transition-all duration-300
                                disabled:opacity-50 disabled:cursor-not-allowed
                                focus:outline-none focus:ring-2 focus:ring-white/20">
-                        Cancel
+                        {{ 'addEditEmployee.cancel' | transloco }}
                     </button>
                 </div>
             </form>

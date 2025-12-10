@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-all-employees',
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     SearchComponent,
     DropdownModule,
     FormsModule,
+    TranslocoModule,
   ],
   templateUrl: './all-employees.component.html',
   styleUrl: './all-employees.component.scss',
@@ -42,20 +44,84 @@ export class AllEmployeesComponent implements OnInit {
   searchTerm: string = '';
   selectedStatus: string | null = null;
 
-  statusOptions = [
-    { label: 'All Status', value: null },
-    { label: 'Active Employee', value: 'Active Employee' },
-    { label: 'Probation Period', value: 'Probation Period' },
-    { label: 'Terminated Employee', value: 'Terminated Employee' },
-    { label: 'Deceased Employee', value: 'Deceased Employee' },
-  ];
+  statusOptions: any[] = [];
 
   private httpService = inject(HttpGeneralService);
   private sessionService = inject(SessionService);
   private router = inject(Router);
+  private translocoService = inject(TranslocoService);
 
   ngOnInit(): void {
+    this.loadStatusOptions();
     this.loadEmployees();
+
+    // Update status options and re-map employees when language changes
+    this.translocoService.langChanges$.subscribe(() => {
+      this.loadStatusOptions();
+      this.remapEmployees();
+    });
+  }
+
+  loadStatusOptions(): void {
+    this.statusOptions = [
+      { label: this.translocoService.translate('status.all'), value: null },
+      {
+        label: this.translocoService.translate('status.active'),
+        value: 'Active Employee',
+      },
+      {
+        label: this.translocoService.translate('status.probation'),
+        value: 'Probation Period',
+      },
+      {
+        label: this.translocoService.translate('status.terminated'),
+        value: 'Terminated Employee',
+      },
+      {
+        label: this.translocoService.translate('status.deceased'),
+        value: 'Deceased Employee',
+      },
+    ];
+  }
+
+  mapEmployeeData(emp: any): Employee {
+    const currentLang = this.translocoService.getActiveLang();
+    const isArabic = currentLang === 'ar';
+
+    return {
+      id: emp.id,
+      employeeId: emp.employeeId,
+      fullName: isArabic
+        ? emp.nameAr || emp.nameEn || 'N/A'
+        : emp.nameEn || emp.nameAr || 'N/A',
+      department: isArabic
+        ? emp.department_name_ar || emp.department_name_en || 'N/A'
+        : emp.department_name_en || emp.department_name_ar || 'N/A',
+      hireDate: this.formatDate(emp.joining_date),
+      status: isArabic
+        ? emp.employment_status_name_ar ||
+          emp.employment_status_name_en ||
+          'N/A'
+        : emp.employment_status_name_en ||
+          emp.employment_status_name_ar ||
+          'N/A',
+      statusValue:
+        emp.employment_status_name_en || emp.employment_status_name_ar || 'N/A', // Store original English value for filtering
+      imageUrl: emp.emp_image,
+      email: emp.email,
+      job: emp.job,
+      phone: emp.phone_no,
+    };
+  }
+
+  remapEmployees(): void {
+    if (this.rawEmployeesData.length > 0) {
+      this.employees = this.rawEmployeesData.map((emp: any) =>
+        this.mapEmployeeData(emp)
+      );
+      this.filteredEmployees = [...this.employees];
+      this.resetPagination();
+    }
   }
 
   loadEmployees(): void {
@@ -83,22 +149,9 @@ export class AllEmployeesComponent implements OnInit {
           // Store raw API data
           this.rawEmployeesData = response;
 
-          this.employees = response.map((emp: any) => ({
-            id: emp.id,
-            employeeId: emp.employeeId,
-            fullName: emp.nameEn || emp.nameAr || 'N/A',
-            department:
-              emp.department_name_en || emp.department_name_ar || 'N/A',
-            hireDate: this.formatDate(emp.joining_date),
-            status:
-              emp.employment_status_name_en ||
-              emp.employment_status_name_ar ||
-              'N/A',
-            imageUrl: emp.emp_image,
-            email: emp.email,
-            job: emp.job,
-            phone: emp.phone_no,
-          }));
+          this.employees = response.map((emp: any) =>
+            this.mapEmployeeData(emp)
+          );
 
           // Initialize filtered employees with all employees
           this.filteredEmployees = [...this.employees];
@@ -166,10 +219,10 @@ export class AllEmployeesComponent implements OnInit {
       });
     }
 
-    // Apply status filter
+    // Apply status filter using statusValue (original API value)
     if (this.selectedStatus) {
-      filtered = filtered.filter((employee) => 
-        employee.status === this.selectedStatus
+      filtered = filtered.filter(
+        (employee) => employee.statusValue === this.selectedStatus
       );
     }
 
