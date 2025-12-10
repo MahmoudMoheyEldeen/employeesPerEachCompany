@@ -96,5 +96,13 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "na": "N/A"
+  },
+  "deleteDialog": {
+    "title": "Are you sure?",
+    "text": "Do you want to delete",
+    "confirmButton": "Yes, delete it!",
+    "cancelButton": "Cancel",
+    "successTitle": "Deleted!",
+    "successText": "Employee has been deleted."
   }
 }

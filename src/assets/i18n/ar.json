@@ -96,5 +96,13 @@
     "cancel": "إلغاء",
     "confirm": "تأكيد",
     "na": "غير متوفر"
+  },
+  "deleteDialog": {
+    "title": "هل أنت متأكد؟",
+    "text": "هل تريد حذف",
+    "confirmButton": "نعم، احذفه!",
+    "cancelButton": "إلغاء",
+    "successTitle": "تم الحذف!",
+    "successText": "تم حذف الموظف بنجاح."
   }
 }

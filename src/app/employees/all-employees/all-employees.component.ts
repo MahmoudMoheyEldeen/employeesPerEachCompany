@@ -257,14 +257,20 @@ export class AllEmployeesComponent implements OnInit {
 
   onDeleteEmployee(employee: Employee): void {
     Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to delete ${employee.fullName}?`,
+      title: this.translocoService.translate('deleteDialog.title'),
+      text: `${this.translocoService.translate('deleteDialog.text')} ${
+        employee.fullName
+      }?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: this.translocoService.translate(
+        'deleteDialog.confirmButton'
+      ),
+      cancelButtonText: this.translocoService.translate(
+        'deleteDialog.cancelButton'
+      ),
     }).then((result) => {
       if (result.isConfirmed) {
         // TODO: Add API call to delete employee
@@ -284,7 +290,11 @@ export class AllEmployeesComponent implements OnInit {
           this.currentPage * this.pageSize < this.filteredEmployees.length;
 
         // Show success message
-        Swal.fire('Deleted!', 'Employee has been deleted.', 'success');
+        Swal.fire(
+          this.translocoService.translate('deleteDialog.successTitle'),
+          this.translocoService.translate('deleteDialog.successText'),
+          'success'
+        );
       }
     });
   }
