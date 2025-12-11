@@ -35,7 +35,7 @@ export class AllEmployeesComponent implements OnInit {
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
   displayedEmployees: Employee[] = [];
-  rawEmployeesData: any[] = []; // Store raw API data
+  rawEmployeesData: any[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
   pageSize: number = 8;
@@ -55,7 +55,6 @@ export class AllEmployeesComponent implements OnInit {
     this.loadStatusOptions();
     this.loadEmployees();
 
-    // Update status options and re-map employees when language changes
     this.translocoService.langChanges$.subscribe(() => {
       this.loadStatusOptions();
       this.remapEmployees();
@@ -106,7 +105,7 @@ export class AllEmployeesComponent implements OnInit {
           emp.employment_status_name_ar ||
           'N/A',
       statusValue:
-        emp.employment_status_name_en || emp.employment_status_name_ar || 'N/A', // Store original English value for filtering
+        emp.employment_status_name_en || emp.employment_status_name_ar || 'N/A',
       imageUrl: emp.emp_image,
       email: emp.email,
       job: emp.job,
@@ -125,7 +124,6 @@ export class AllEmployeesComponent implements OnInit {
   }
 
   loadEmployees(): void {
-    // Get company ID from session
     const companyId = this.sessionService.getCompanyId();
 
     if (!companyId) {
@@ -144,19 +142,15 @@ export class AllEmployeesComponent implements OnInit {
       next: (response) => {
         console.log('Employees API Response:', response);
 
-        // Map API response to Employee interface
         if (response && Array.isArray(response)) {
-          // Store raw API data
           this.rawEmployeesData = response;
 
           this.employees = response.map((emp: any) =>
             this.mapEmployeeData(emp)
           );
 
-          // Initialize filtered employees with all employees
           this.filteredEmployees = [...this.employees];
 
-          // Load first 8 employees
           this.resetPagination();
         } else {
           this.employees = [];
@@ -202,7 +196,6 @@ export class AllEmployeesComponent implements OnInit {
   applyFilters(): void {
     let filtered = [...this.employees];
 
-    // Apply search filter
     if (this.searchTerm) {
       filtered = filtered.filter((employee) => {
         const fullName = employee.fullName?.toLowerCase() || '';
@@ -219,7 +212,6 @@ export class AllEmployeesComponent implements OnInit {
       });
     }
 
-    // Apply status filter using statusValue (original API value)
     if (this.selectedStatus) {
       filtered = filtered.filter(
         (employee) => employee.statusValue === this.selectedStatus
@@ -228,7 +220,6 @@ export class AllEmployeesComponent implements OnInit {
 
     this.filteredEmployees = filtered;
 
-    // Reset pagination and load first page of filtered results
     this.resetPagination();
   }
 
@@ -244,12 +235,10 @@ export class AllEmployeesComponent implements OnInit {
   }
 
   onEditEmployee(employee: Employee): void {
-    // Find the raw employee data by ID
     const rawEmployee = this.rawEmployeesData.find(
       (emp) => emp.id === employee.id
     );
 
-    // Navigate to edit form with raw employee data as state
     this.router.navigate(['/add-edit-employee', employee.id], {
       state: { employee: rawEmployee || employee },
     });
@@ -273,10 +262,8 @@ export class AllEmployeesComponent implements OnInit {
       ),
     }).then((result) => {
       if (result.isConfirmed) {
-        // TODO: Add API call to delete employee
         console.log('Deleting employee:', employee);
 
-        // Remove from local arrays
         this.employees = this.employees.filter((emp) => emp.id !== employee.id);
         this.filteredEmployees = this.filteredEmployees.filter(
           (emp) => emp.id !== employee.id
@@ -285,11 +272,9 @@ export class AllEmployeesComponent implements OnInit {
           (emp) => emp.id !== employee.id
         );
 
-        // Update hasMore flag
         this.hasMore =
           this.currentPage * this.pageSize < this.filteredEmployees.length;
 
-        // Show success message
         Swal.fire(
           this.translocoService.translate('deleteDialog.successTitle'),
           this.translocoService.translate('deleteDialog.successText'),

@@ -74,10 +74,8 @@ export class HttpGeneralService {
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Client Error: ${error.error.message}`;
     } else {
-      // Backend error
       errorMessage = `Server Error (${error.status}): ${error.message}`;
 
-      // You can handle specific status codes here
       switch (error.status) {
         case 400:
           errorMessage =

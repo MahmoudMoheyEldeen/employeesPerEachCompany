@@ -1,6 +1,6 @@
 <div class="w-full min-h-screen pt-0 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl mx-auto">
-        <!-- Header -->
+
         <div class="mb-8">
             <div class="flex items-center gap-4 mb-4">
                 <button (click)="backToEmployees()"
@@ -17,11 +17,11 @@
             </p>
         </div>
 
-        <!-- Form Card -->
+
         <div class="bg-white/5 backdrop-blur-lg rounded-xl shadow-lg ring-1 ring-white/10 p-6 sm:p-8">
             <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
 
-                <!-- Name Field -->
+
                 <div class="mb-6">
                     <label for="name" class="block text-sm font-medium text-white mb-2">
                         {{ 'addEditEmployee.fullName' | transloco }} <span class="text-red-400">*</span>
@@ -36,7 +36,7 @@
                     </p>
                 </div>
 
-                <!-- Department Field -->
+
                 <div class="mb-6">
                     <label for="department" class="block text-sm font-medium text-white mb-2">
                         {{ 'addEditEmployee.department' | transloco }} <span class="text-red-400">*</span>
@@ -51,7 +51,7 @@
                     </p>
                 </div>
 
-                <!-- Hire Date Field -->
+
                 <div class="mb-6">
                     <label for="hireDate" class="block text-sm font-medium text-white mb-2">
                         {{ 'addEditEmployee.hireDate' | transloco }} <span class="text-red-400">*</span>
@@ -65,7 +65,7 @@
                     </p>
                 </div>
 
-                <!-- Status Field -->
+
                 <div class="mb-8">
                     <label for="status" class="block text-sm font-medium text-white mb-2">
                         {{ 'addEditEmployee.status' | transloco }} <span class="text-red-400">*</span>
@@ -84,7 +84,7 @@
                     </p>
                 </div>
 
-                <!-- Form Actions -->
+
                 <div class="flex flex-col sm:flex-row gap-4">
                     <button type="submit" [disabled]="isSubmitting"
                         class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold 

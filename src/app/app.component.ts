@@ -23,7 +23,6 @@ import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
     DropdownModule,
     ButtonModule,
     FormsModule,
-    RouterLink,
     CommonModule,
     TranslocoModule,
   ],
@@ -46,10 +45,8 @@ export class AppComponent {
   selectedLanguage = { label: 'English', value: 'en' };
 
   ngOnInit() {
-    // Check login status on init
     this.checkLoginStatus();
 
-    // Set initial language (only in browser)
     if (isPlatformBrowser(this.platformId)) {
       const savedLang = localStorage.getItem('selectedLanguage');
       if (savedLang) {
@@ -57,15 +54,12 @@ export class AppComponent {
         this.selectedLanguage = lang;
         this.translocoService.setActiveLang(lang.value);
 
-        // Apply RTL/LTR direction
         this.applyDirection(lang.value);
       } else {
-        // Default to LTR for English
         this.applyDirection('en');
       }
     }
 
-    // Check login status on every route change
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -76,7 +70,6 @@ export class AppComponent {
   onLanguageChange() {
     this.translocoService.setActiveLang(this.selectedLanguage.value);
 
-    // Save to localStorage (only in browser)
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(
         'selectedLanguage',
@@ -84,12 +77,10 @@ export class AppComponent {
       );
     }
 
-    // Apply RTL/LTR direction
     this.applyDirection(this.selectedLanguage.value);
   }
 
   applyDirection(lang: string) {
-    // Set document direction for RTL/LTR (only in browser)
     if (isPlatformBrowser(this.platformId)) {
       if (lang === 'ar') {
         document.documentElement.setAttribute('dir', 'rtl');

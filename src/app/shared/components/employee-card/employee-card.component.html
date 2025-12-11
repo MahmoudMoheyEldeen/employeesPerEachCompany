@@ -2,14 +2,14 @@
             hover:ring-white/20 hover:shadow-xl transition-all duration-300 
             transform hover:-translate-y-1" (click)="navigateToEmployeeDetails()">
 
-    <!-- Card Header with Name and Status -->
+
     <div class="relative bg-gradient-to-br from-indigo-500/20 to-purple-500/20 px-4 py-4 text-center">
-        <!-- Full Name -->
+
         <h3 class="text-lg font-semibold text-white mb-2 truncate">
             {{ employee.fullName }}
         </h3>
 
-        <!-- Status Badge -->
+
         <div class="inline-flex items-center justify-center">
             <div [class]="'px-3 py-1 rounded-full text-xs font-semibold ' + getStatusClass()">
                 {{ employee.status }}
@@ -17,21 +17,21 @@
         </div>
     </div>
 
-    <!-- Card Body -->
+
     <div class="px-4 py-4 text-center">
-        <!-- Department -->
+
         <p class="text-sm text-indigo-400 mb-3 flex items-center justify-center gap-1">
             <i class="pi pi-briefcase text-xs"></i>
             {{ employee.department }}
         </p>
 
-        <!-- Hire Date -->
+
         <div class="flex items-center justify-center gap-1 text-xs text-gray-400 mb-4">
             <i class="pi pi-calendar text-xs"></i>
             <span>Hired: {{ employee.hireDate }}</span>
         </div>
 
-        <!-- Divider -->
+
         <div class="border-t border-white/10 mb-4"></div>
 
 

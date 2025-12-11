@@ -46,15 +46,11 @@ export class AddEditEmplyeeComponent implements OnInit {
       this.isSubmitting = true;
       console.log('Form Data:', this.employeeForm.value);
 
-      // TODO: Add API call here to save employee
-
-      // Navigate back after save
       setTimeout(() => {
         this.isSubmitting = false;
         this.backToEmployees();
       }, 1000);
     } else {
-      // Mark all fields as touched to show validation errors
       Object.keys(this.employeeForm.controls).forEach((key) => {
         this.employeeForm.get(key)?.markAsTouched();
       });
@@ -62,16 +58,13 @@ export class AddEditEmplyeeComponent implements OnInit {
   }
 
   checkEditMode(): void {
-    // Get state from window.history (works after navigation)
     const state = window.history.state as { employee: any };
 
-    // Check route params for ID
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.isEditMode = true;
         this.employeeId = +params['id'];
 
-        // If we have employee data in state, fill the form
         if (state?.employee) {
           this.fillForm(state.employee);
         }
@@ -80,7 +73,6 @@ export class AddEditEmplyeeComponent implements OnInit {
   }
 
   fillForm(employee: any): void {
-    // Map the API response fields to form fields
     this.employeeForm.patchValue({
       name: employee.nameEn || employee.nameAr || employee.fullName || '',
       department:
@@ -102,7 +94,6 @@ export class AddEditEmplyeeComponent implements OnInit {
   convertDateToInputFormat(dateString: string): string {
     if (!dateString) return '';
 
-    // Handle ISO date format (2025-10-01T00:00:00)
     if (dateString.includes('T')) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -111,7 +102,6 @@ export class AddEditEmplyeeComponent implements OnInit {
       return `${year}-${month}-${day}`;
     }
 
-    // If date is in dd-mm-yyyy format, convert to yyyy-mm-dd
     const parts = dateString.split('-');
     if (parts.length === 3 && parts[0].length <= 2) {
       const day = parts[0];
@@ -127,7 +117,6 @@ export class AddEditEmplyeeComponent implements OnInit {
     this.router.navigate(['/allEmployees']);
   }
 
-  // Helper methods for validation
   isFieldInvalid(fieldName: string): boolean {
     const field = this.employeeForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));

@@ -1,6 +1,6 @@
 <div class="w-full pt-0 px-4 sm:px-6 lg:px-8">
     <div class="w-full">
-        <!-- Header -->
+
         <div class="mb-8">
             <div class="flex justify-between">
                 <div>
@@ -34,20 +34,20 @@
 
         </div>
 
-        <!-- Loading State -->
+
         <div *ngIf="isLoading" class="text-center py-12">
             <i class="pi pi-spinner pi-spin text-6xl text-indigo-400"></i>
             <p class="text-gray-400 mt-4">{{ 'employees.loading' | transloco }}</p>
         </div>
 
-        <!-- Error State -->
+
         <div *ngIf="errorMessage && !isLoading"
             class="bg-red-500/10 border border-red-500/20 rounded-lg p-6 text-center">
             <i class="pi pi-exclamation-circle text-4xl text-red-400 mb-4"></i>
             <p class="text-red-400">{{ errorMessage }}</p>
         </div>
 
-        <!-- Responsive Grid: 1 column on mobile, 2 on tablet, 3 on desktop, 4 on large screens -->
+
         <div *ngIf="!isLoading && !errorMessage"
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <app-employee-card *ngFor="let employee of displayedEmployees" [employee]="employee"
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <!-- No Search Results -->
+
         <div *ngIf="!isLoading && !errorMessage && employees.length > 0 && filteredEmployees.length === 0"
             class="text-center py-12">
             <div class="text-gray-400 mb-4">
@@ -70,7 +70,7 @@
             <p class="text-gray-400">{{ 'employees.noResultsDesc' | transloco }}</p>
         </div>
 
-        <!-- Empty State -->
+
         <div *ngIf="!isLoading && !errorMessage && employees.length === 0" class="text-center py-12">
             <div class="text-gray-400 mb-4">
                 <i class="pi pi-users text-6xl"></i>

@@ -12,9 +12,6 @@ export class SessionService {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  /**
-   * Get company ID from current session
-   */
   getCompanyId(): string | null {
     if (!this.isBrowser) return null;
 
@@ -24,17 +21,11 @@ export class SessionService {
     return sessionStorage.getItem(sessionId);
   }
 
-  /**
-   * Check if user is logged in
-   */
   isLoggedIn(): boolean {
     if (!this.isBrowser) return false;
     return this.getCompanyId() !== null;
   }
 
-  /**
-   * Clear current session (logout)
-   */
   clearSession(): void {
     if (!this.isBrowser) return;
 

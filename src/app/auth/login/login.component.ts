@@ -46,7 +46,6 @@ export class LoginComponent {
   }
 
   onLogin() {
-    // Check if form is valid
     if (this.loginForm.invalid) {
       this.errorMessage = 'Please enter valid email and password';
       return;
@@ -58,16 +57,13 @@ export class LoginComponent {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    // API requires GET with query parameters (not ideal for security, but that's how the API is designed)
     const loginUrl = `https://erpapi.nc.sa/erp/Erp_Users/erp_login?email=${email}&password=${password}&lang=ar`;
 
     this.httpService.get<any>(loginUrl).subscribe({
       next: (response) => {
         console.log('API Response:', response);
 
-        // Check if login was successful based on result field
         if (response.result === false || response.result === 'false') {
-          // Login failed - show error message
           this.errorMessage =
             response.errorMessage ||
             response.message ||
@@ -77,16 +73,12 @@ export class LoginComponent {
           return;
         }
 
-        // Login successful
         console.log('Login successful:', response);
 
-        // Generate unique session ID for this tab
         const sessionId = 'session_' + Date.now() + '_' + Math.random();
 
-        // Store only companyId for this session
         sessionStorage.setItem(sessionId, response.companyId);
 
-        // Store current session ID
         sessionStorage.setItem('currentSessionId', sessionId);
 
         this.isLoading = false;

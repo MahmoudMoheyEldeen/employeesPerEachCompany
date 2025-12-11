@@ -13,7 +13,7 @@ export interface Employee {
   department: string;
   hireDate: string;
   status: string;
-  statusValue?: string; // Original API status value for filtering
+  statusValue?: string;
   imageUrl?: string;
   email?: string;
   job?: string;

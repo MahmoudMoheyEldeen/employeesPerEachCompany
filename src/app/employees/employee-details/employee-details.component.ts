@@ -52,7 +52,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   employeeId: number = 0;
   employee: Employee | null = null;
-  rawEmployeeData: any = null; // Store raw API data for edit
+  rawEmployeeData: any = null;
   isLoading: boolean = false;
   errorMessage: string = '';
 
@@ -62,7 +62,6 @@ export class EmployeeDetailsComponent implements OnInit {
       this.loadEmployeeDetails();
     });
 
-    // Re-map employee data when language changes
     this.translocoService.langChanges$.subscribe(() => {
       if (this.rawEmployeeData) {
         this.employee = this.mapEmployeeData(this.rawEmployeeData);
@@ -92,7 +91,6 @@ export class EmployeeDetailsComponent implements OnInit {
           );
 
           if (employeeData) {
-            // Store raw data for edit functionality
             this.rawEmployeeData = employeeData;
             this.employee = this.mapEmployeeData(employeeData);
           } else {
@@ -193,7 +191,6 @@ export class EmployeeDetailsComponent implements OnInit {
 
     if (!this.employee) return;
 
-    // Navigate to edit form with raw employee data
     this.router.navigate(['/add-edit-employee', this.employee.id], {
       state: { employee: this.rawEmployeeData },
     });
@@ -221,10 +218,8 @@ export class EmployeeDetailsComponent implements OnInit {
       ),
     }).then((result) => {
       if (result.isConfirmed) {
-        // TODO: Add API call to delete employee
         console.log('Deleting employee:', this.employee);
 
-        // Show success message and navigate back
         Swal.fire(
           this.translocoService.translate('deleteDialog.successTitle'),
           this.translocoService.translate('deleteDialog.successText'),

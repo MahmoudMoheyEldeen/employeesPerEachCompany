@@ -25,7 +25,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<string>();
 
   ngOnInit(): void {
-    // RxJS optimization: debounce search input by 300ms
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((searchTerm) => {
